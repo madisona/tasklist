@@ -1,0 +1,32 @@
+{% extends "list-base.html" %}
+
+{% block title %}Tasks{% endblock %}
+{% block page_title %}{{ list }}{% endblock %}
+
+{% block list_items %}
+<ul>
+    <li><a href="{% url listapp:add_task list.key.id %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
+    {% for task in tasks %}
+        <li id="{{ task.key.id }}" class="task_item{% if task.status == "completed" %} completed{% endif %}">{{ task.description }}</li>
+    {% empty %}
+        <li>No Tasks Yet...</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block scripts %}
+    $(document).ready(function(){
+        $(".task_item").click(function(){
+            var el = $(this);
+            $.ajax({
+                url: "{% url listapp:change_status %}",
+                type: 'POST',
+                data: {'task': el.attr("id")},
+                success: function(){
+                    el.toggleClass("completed");
+                }
+            }); 
+        });
+    });
+
+{% endblock %}

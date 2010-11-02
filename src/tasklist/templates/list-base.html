@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}{% endblock %}</title>
+        <link media="only screen and (max-device-width: 480px)" href="list.css" type= "text/css" rel="stylesheet">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/female.png"/>
+        <link href="{{ MEDIA_URL }}list.css" rel="stylesheet" type="text/css" />
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        <header><h1>{% block page_title %}List App{% endblock %}</h1></header>
+        <section class="list-items">
+            {% block list_items %}
+            {% endblock %}
+        </section>
+        {% block nav %}{% endblock %}
+        <footer><p>&copy; {% now "Y" %} - Two Madisons</p></footer>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/listapp.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            {% block scripts %}{% endblock %}
+        </script>
+    </body>
+</html>

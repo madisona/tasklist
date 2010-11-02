@@ -1,0 +1,14 @@
+{% extends "list-base.html" %}
+
+{% block title %}Add List{% endblock %}
+{% block list_items %}
+
+<form action="" method="post">{% csrf_token %}
+    <div class="center">
+        <p>{{ form.list_name }}</p>
+        <p>
+            <input type="submit" value="Add List" />
+        </p>
+    </div>
+</form>
+{% endblock %}

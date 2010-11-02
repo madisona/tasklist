@@ -1,0 +1,12 @@
+{% extends "list-base.html" %}
+
+{% block title %}Add Task{% endblock %}
+{% block list_items %}
+
+<form action="" method="post">{% csrf_token %}
+    <div class="center">
+        <p>{{ form.description }}</p>
+        <p><input type="submit" value="Add Task" /></p>
+    </div>
+</form>
+{% endblock %}
