@@ -5,11 +5,13 @@
 
 {% block list_items %}
 <ul>
-    <li><a href="{% url listapp:add_list %}"><span class="icon"><img src="{{ MEDIA_URL }}images/add.png" alt="add item"></span>New List</a></li>
+    {% comment %}
+    <li><a href="{% url tasklist:add_list %}"><span class="icon"><img src="{{ MEDIA_URL }}images/add.png" alt="add item"></span>New List</a></li>
     {% for list in lists %}
-    <li class="list_name"><a href="{% url listapp:tasks list.key.id %}">{{ list }}</a></li>
+    <li class="list_name"><a href="{% url tasklist:tasks list.key.id %}">{{ list }}</a></li>
     {% empty %}
     <li>No Lists available...</li>
     {% endfor %}
+    {% endcomment %}
 </ul>
 {% endblock %}
