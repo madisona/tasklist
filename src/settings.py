@@ -90,12 +90,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'tasklist',
+
     'debug_toolbar',
+    'tasklist',
+
 )
 
 INTERNAL_IPS = ('127.0.0.1',)
