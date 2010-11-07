@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    return template.render(request, "index.html", {
+    return template.render(request, "tasklist/index.html", {
         'tasklists': models.TaskList.get_tasklists(request.user),
     })
 
