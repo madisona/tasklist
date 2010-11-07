@@ -10,10 +10,7 @@
     </li>
     {% for tasklist in tasklists %}
         <li class="list_name">
-            {{ tasklist }}
-            {% comment %}
-            <a href="{% url tasklist:tasks list.key.id %}">{{ list }}</a>
-                    {% endcomment %}
+            <a href="{{ tasklist.get_absolute_url }}">{{ tasklist }}</a>
         </li>
     {% empty %}
         <li>No Lists available...</li>
