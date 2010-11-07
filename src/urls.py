@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
@@ -17,3 +18,10 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'redirect_field_name': 'next'}),
     (r'', include(task_urls, namespace="tasklist")),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'/static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_URL,
+        })
+    )
