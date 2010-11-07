@@ -1,15 +1,37 @@
 # Create your views here.
 
+from django import http
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+
 from ext import template
 from tasklist import models
-
-from django.contrib.auth.decorators import login_required
+from tasklist import forms
 
 @login_required
 def index(request):
     return template.render(request, "tasklist/index.html", {
         'tasklists': models.TaskList.get_tasklists(request.user),
     })
+
+@login_required
+def add_list(request):
+    tasklist = models.TaskList(owner=request.user)
+    form = forms.TaskListForm(request.POST or None, instance=tasklist)
+    if form.is_valid():
+        form.save()
+        return http.HttpResponseRedirect(reverse("tasklist:index"))
+        
+    return template.render(request, "tasklist/add_list.html", {
+        'form': form,
+    })
+#    form = forms.AddListForm(request.POST or None)
+#    if form.is_valid():
+#        form.save()
+#        return http.HttpResponseRedirect(reverse('listapp:index'))
+#    return template.render(request, "add_list.html", {
+#        'form': form,
+#    })
 
 #def add_task(request, list_id):
 #    form = forms.AddTaskForm(request.POST or None)
@@ -21,14 +43,8 @@ def index(request):
 #        'form': form,
 #    })
 #
-#def add_list(request):
-#    form = forms.AddListForm(request.POST or None)
-#    if form.is_valid():
-#        form.save()
-#        return http.HttpResponseRedirect(reverse('listapp:index'))
-#    return template.render(request, "add_list.html", {
-#        'form': form,
-#    })
+
+
 #
 #def tasks(request, list_id=None):
 #    list = models.List.get_by_id(int(list_id))
