@@ -21,6 +21,10 @@ class TaskList(models.Model):
     def get_tasklists(user):
         return TaskList.objects.filter(owner=user, status=0)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("tasklist:tasks", None, {'tasklist_id': self.pk})
+
 class Task(models.Model):
     STATUSES = (
         (0, "active"),

@@ -25,13 +25,6 @@ def add_list(request):
     return template.render(request, "tasklist/add_list.html", {
         'form': form,
     })
-#    form = forms.AddListForm(request.POST or None)
-#    if form.is_valid():
-#        form.save()
-#        return http.HttpResponseRedirect(reverse('listapp:index'))
-#    return template.render(request, "add_list.html", {
-#        'form': form,
-#    })
 
 #def add_task(request, list_id):
 #    form = forms.AddTaskForm(request.POST or None)
@@ -45,8 +38,9 @@ def add_list(request):
 #
 
 
-#
-#def tasks(request, list_id=None):
+
+def tasks(request, tasklist_id=None):
+    return http.HttpResponse("hello world")
 #    list = models.List.get_by_id(int(list_id))
 #    return template.render(request, "tasks.html", {
 #        'list': list,

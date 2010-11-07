@@ -29,7 +29,7 @@ class TaskListModelTests(test.TestCase):
 
     def should_use_name_as_string_representation(self):
         tasklist = models.TaskList(name="Aaron's Tasks")
-        self.assertEqual(str(tasklist), "Aaron's Tasks")
+        self.assertEqual(str(tasklist), tasklist.name)
 
     def should_default_status_to_zero(self):
         user = User.objects.create(username="aaron", password="pswd", email="a@b.com")
@@ -45,6 +45,10 @@ class TaskListModelTests(test.TestCase):
             'status': 0,
         })])
         self.assertEqual(tasklists, query_mock.filter.return_value)
+
+    def should_get_absolute_url_to_task_list(self):
+        tasklist = models.TaskList(pk=1)
+        self.assertEqual(tasklist.get_absolute_url(), reverse("tasklist:tasks", kwargs={'tasklist_id': tasklist.pk}))
 
 
 class TaskModelTests(test.TestCase):
