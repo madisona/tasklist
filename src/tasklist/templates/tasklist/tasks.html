@@ -4,10 +4,8 @@
 {% block page_title %}{{ tasklist }}{% endblock %}
 
 {% block content %}
-<ul>
-    {% comment %}
-    <li><a href="{% url tasklist:add_task list.key.id %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
-    {% endcomment %}
+    <ul>
+        <li><a href="{{ tasklist.get_add_task_url }}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
     {% for task in tasks %}
         <li id="{{ task.id }}" class="task_item{% if task.status == 1 %} completed{% endif %}">{{ task }}</li>
     {% empty %}
