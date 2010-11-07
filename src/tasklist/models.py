@@ -1,3 +1,38 @@
 from django.db import models
 
-# Create your models here.
+from django.contrib.auth.models import User
+
+class TaskList(models.Model):
+    STATUSES = (
+        (0, "active"),
+        (1, "inactive"),
+    )
+
+    owner = models.ForeignKey(User)
+    name = models.CharField(max_length=20)
+    status = models.CharField(max_length=10, default=0, choices=STATUSES)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_update_time = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
+
+    @staticmethod
+    def get_tasklists(user):
+        return TaskList.objects.filter(owner=user, status=0)
+
+class Task(models.Model):
+    STATUSES = (
+        (0, "active"),
+        (1, "completed"),
+        (2, "deleted"),
+    )
+
+    tasklist = models.ForeignKey(TaskList)
+    description = models.CharField(max_length=100)
+    status = models.CharField(max_length=10, default=0, choices=STATUSES)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_update_time = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.description
