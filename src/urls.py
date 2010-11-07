@@ -14,8 +14,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': "tasklist/login.html"}),
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'redirect_field_name': 'next'}),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': "tasklist/login.html"}, name="login"),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'redirect_field_name': 'next'}, name="logout"),
     (r'', include(task_urls, namespace="tasklist")),
 )
 
