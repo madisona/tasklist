@@ -16,7 +16,12 @@
             {% endblock %}
         </section>
         {% block nav %}{% endblock %}
-        <footer><p>&copy; {% now "Y" %} - Two Madisons</p></footer>
+        <footer>
+            <p>&copy; {% now "Y" %} - Two Madisons</p>
+            {% if user.is_authenticated %}
+            <p>Logged in as [{{ user }}]&nbsp; | &nbsp; <a href="/accounts/logout/?next=/">logout</a></p>
+            {% endif %}
+        </footer>
         <script type="text/javascript" src="{{ MEDIA_URL }}js/listapp.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script type="text/javascript">
