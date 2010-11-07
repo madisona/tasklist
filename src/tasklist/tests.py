@@ -50,6 +50,10 @@ class TaskListModelTests(test.TestCase):
         tasklist = models.TaskList(pk=1)
         self.assertEqual(tasklist.get_absolute_url(), reverse("tasklist:tasks", kwargs={'tasklist_id': tasklist.pk}))
 
+    def should_get_absolute_url_to_add_task(self):
+        tasklist = models.TaskList(pk=1)
+        self.assertEqual(tasklist.get_add_task_url(), reverse("tasklist:add_task", kwargs={'tasklist_id': tasklist.pk}))
+
 
 class TaskModelTests(test.TestCase):
 

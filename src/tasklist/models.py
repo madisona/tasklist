@@ -25,6 +25,10 @@ class TaskList(models.Model):
     def get_absolute_url(self):
         return ("tasklist:tasks", None, {'tasklist_id': self.pk})
 
+    @models.permalink
+    def get_add_task_url(self):
+        return ("tasklist:add_task", None, {'tasklist_id': self.pk})
+
 class Task(models.Model):
     STATUSES = (
         (0, "active"),
