@@ -9,6 +9,7 @@ from mock import patch, Mock
 from django import test
 
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from tasklist import models
 
 class TaskListModelTests(test.TestCase):
@@ -46,8 +47,38 @@ class TaskModelTests(test.TestCase):
         self.assertEqual(task.status, 0)
 
 
+class IndexPageAuthenticationTests(test.TestCase):
+
+    def should_require_logged_in_user(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:index"))
+        self.assertEqual(response.status_code, 302)
+
+    def should_send_non_logged_in_user_to_login_page(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:index"), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasklist/login.html")
+
 class IndexPageTests(test.TestCase):
+
+    def setUp(self):
+        user = User(username="aaron", email="aaron@twomadisons.com", is_active=True)
+        user.set_password("pswd")
+        user.save()
+        
+        self.client = test.Client()
+        rs = self.client.login(username="aaron", password="pswd")
+
+    def tearDown(self):
+        self.client.logout()
+
+    def should_allow_logged_in_user_to_access_page(self):
+        response = self.client.get(reverse("tasklist:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasklist/index.html")        
 
     @patch("tasklist.models.TaskList.get_tasklists")
     def should_send_lists_to_template(self, query_mock):
-        pass
+        response = self.client.get(reverse("tasklist:index"))
+        self.assertEqual(response.context['tasklists'], query_mock.return_value)
