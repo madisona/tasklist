@@ -1,6 +1,7 @@
 # Create your views here.
 
 from django import http
+from django import shortcuts
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
@@ -38,14 +39,13 @@ def add_list(request):
 #
 
 
-
+@login_required
 def tasks(request, tasklist_id=None):
-    return http.HttpResponse("hello world")
-#    list = models.List.get_by_id(int(list_id))
-#    return template.render(request, "tasks.html", {
-#        'list': list,
-#        'tasks': models.Task.all().filter('list =', list).fetch(1000)
-#    })
+    tasklist = shortcuts.get_object_or_404(models.TaskList, pk=tasklist_id)
+    return template.render(request, "tasklist/tasks.html", {
+        'tasklist': tasklist,
+        'tasks': models.Task.get_tasks(tasklist),
+    })
 #
 #def change_status(request):
 #    logging.warn("we're at the ajax test")

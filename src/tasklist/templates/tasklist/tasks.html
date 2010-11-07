@@ -1,13 +1,15 @@
-{% extends "list-base.html" %}
+{% extends "tasklist/list-base.html" %}
 
 {% block title %}Tasks{% endblock %}
-{% block page_title %}{{ list }}{% endblock %}
+{% block page_title %}{{ tasklist }}{% endblock %}
 
-{% block list_items %}
+{% block content %}
 <ul>
-    <li><a href="{% url listapp:add_task list.key.id %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
+    {% comment %}
+    <li><a href="{% url tasklist:add_task list.key.id %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
+    {% endcomment %}
     {% for task in tasks %}
-        <li id="{{ task.key.id }}" class="task_item{% if task.status == "completed" %} completed{% endif %}">{{ task.description }}</li>
+        <li id="{{ task.id }}" class="task_item{% if task.status == 1 %} completed{% endif %}">{{ task }}</li>
     {% empty %}
         <li>No Tasks Yet...</li>
     {% endfor %}
@@ -15,18 +17,7 @@
 {% endblock %}
 
 {% block scripts %}
-    $(document).ready(function(){
-        $(".task_item").click(function(){
-            var el = $(this);
-            $.ajax({
-                url: "{% url listapp:change_status %}",
-                type: 'POST',
-                data: {'task': el.attr("id")},
-                success: function(){
-                    el.toggleClass("completed");
-                }
-            }); 
-        });
-    });
-
+    {% comment %}
+    {% include "tasklist/change_status_ajax.js" %}
+    {% endcomment %}
 {% endblock %}

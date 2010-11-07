@@ -14,9 +14,9 @@ from tasklist import models
 
 class ListAppAuthenticatedTestCase(test.TestCase):
     def setUp(self):
-        user = User(username="aaron", email="aaron@twomadisons.com")
-        user.set_password("pswd")
-        user.save()
+        self.user = User(username="aaron", email="aaron@twomadisons.com")
+        self.user.set_password("pswd")
+        self.user.save()
 
         self.client = test.Client()
         self.client.login(username="aaron", password="pswd")
@@ -63,18 +63,32 @@ class TaskModelTests(test.TestCase):
         task = models.Task.objects.create(tasklist=tasklist, description="New Task")
         self.assertEqual(task.status, 0)
 
+    @patch("tasklist.models.Task.objects.filter")
+    def should_get_non_deleted_tasks(self, query_mock):
+        tasklist = Mock()
+        tasks = models.Task.get_tasks(tasklist)
+        self.assertEqual(query_mock.call_args, [(), {
+            'tasklist': tasklist,
+            'status__in': (0, 1),
+        }])
+        self.assertEqual(tasks, query_mock.return_value)
 
-class IndexPageAuthenticationTests(test.TestCase):
+class AuthenticationTests(test.TestCase):
 
     def should_require_logged_in_user_for_index_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:index"))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=/", 302)
 
     def should_require_logged_in_user_for_add_list_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:add_list"))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=/add-list", 302)
+
+    def should_require_logged_in_user_for_tasks_page(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:tasks", args=(1,)))
+        self.assertRedirects(response, reverse("login") + "?next=/tasks/1/", 302)
 
     def should_send_non_logged_in_user_to_login_page(self):
         client = test.Client()
@@ -122,3 +136,25 @@ class AddListPageTests(ListAppAuthenticatedTestCase):
         response = self.client.get(reverse("tasklist:add_list"))
         self.assertRedirects(response, reverse("tasklist:index"), status_code=302)
 
+class TasksPage(ListAppAuthenticatedTestCase):
+
+    @patch("tasklist.models.Task.get_tasks", Mock(return_value=[]))
+    @patch("django.shortcuts.get_object_or_404", Mock(return_value=None))
+    def should_allow_logged_in_user_to_access_tasks_page(self):
+        response = self.client.get(reverse("tasklist:tasks", args=(1,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasklist/tasks.html")
+
+    def should_return_404_if_tasklist_not_found(self):
+        response = self.client.get(reverse("tasklist:tasks", args=(1,)))
+        self.assertEqual(response.status_code, 404)
+
+    @patch("tasklist.models.Task.get_tasks")
+    @patch("django.shortcuts.get_object_or_404")
+    def should_send_tasks_and_tasklist_to_template(self, tasklist_mock, tasks_mock):
+        tasks_mock.return_value = []
+        response = self.client.get(reverse("tasklist:tasks", args=(1,)))
+        self.assertEqual(tasklist_mock.call_args, [(models.TaskList,), {'pk': '1'}])
+        self.assertEqual(tasks_mock.call_args, [(tasklist_mock.return_value,), {}])
+        self.assertEqual(response.context['tasklist'], tasklist_mock.return_value)
+        self.assertEqual(response.context['tasks'], tasks_mock.return_value)

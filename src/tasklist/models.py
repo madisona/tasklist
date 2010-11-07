@@ -10,7 +10,7 @@ class TaskList(models.Model):
 
     owner = models.ForeignKey(User)
     name = models.CharField(max_length=20)
-    status = models.CharField(max_length=10, default=0, choices=STATUSES)
+    status = models.IntegerField(default=0, choices=STATUSES)
     creation_time = models.DateTimeField(auto_now_add=True)
     last_update_time = models.DateTimeField(auto_now=True)
 
@@ -34,9 +34,13 @@ class Task(models.Model):
 
     tasklist = models.ForeignKey(TaskList)
     description = models.CharField(max_length=100)
-    status = models.CharField(max_length=10, default=0, choices=STATUSES)
+    status = models.IntegerField(default=0, choices=STATUSES)
     creation_time = models.DateTimeField(auto_now_add=True)
     last_update_time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.description
+
+    @staticmethod
+    def get_tasks(tasklist):
+        return Task.objects.filter(tasklist=tasklist, status__in=(0, 1))
