@@ -95,3 +95,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'tasklist',
 )
+
+import unittest
+unittest.TestLoader.testMethodPrefix = "should"
