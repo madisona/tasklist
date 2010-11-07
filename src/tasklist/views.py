@@ -27,7 +27,8 @@ def add_list(request):
         'form': form,
     })
 
-#def add_task(request, list_id):
+def add_task(request, tasklist_id):
+    return http.HttpResponse("hello world")
 #    form = forms.AddTaskForm(request.POST or None)
 #    if form.is_valid():
 #        list = models.List.get_by_id(int(list_id))
