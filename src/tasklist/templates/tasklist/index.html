@@ -1,13 +1,17 @@
 {% extends "tasklist/list-base.html" %}
 
-{% block title %}Lists{% endblock %}
-{% block page_title %}All Lists{% endblock %}
+{% block title %}{{ user.first_name }}'s Lists{% endblock %}
+{% block page_title %}{{ user.first_name }}'s Lists{% endblock %}
+
+{% block nav %}
+<span class="button">
+    <a href="{% url tasklist:add_list %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add item">New List</a>
+</span>
+
+{% endblock %}
 
 {% block content %}
 <ul>
-    <li>
-        <a href="{% url tasklist:add_list %}"><span class="icon"><img src="{{ MEDIA_URL }}images/add.png" alt="add item"></span>New List</a>
-    </li>
     {% for tasklist in tasklists %}
         <li class="list_name">
             <a href="{{ tasklist.get_absolute_url }}">{{ tasklist }}</a>

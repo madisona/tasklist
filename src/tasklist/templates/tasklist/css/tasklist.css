@@ -1,0 +1,27 @@
+* {margin: 0; padding: 0;}
+
+h1, h2, h3, h4, h5, h6, p {margin: 1em 0;}
+h1 {font-size: 1.4em;}
+h2 {font-size: 1.2em;}
+h3 {font-size: 1.1em;}
+h4 {font-size: 1.0em;}
+h5 {font-size: 0.9em;}
+h6 {font-size: 0.8em;}
+
+html {-webkit-text-size-adjust: none;}
+body {
+    font-family: Georgia, 'Times New Roman' 'Sans Serif';
+    color: #333;
+    text-align: center;
+}
+
+body {width: 100%;}
+
+input {line-height: 2em;}
+
+header h1 {background-color: purple; color: #fff; font-size: 1.6em; margin: 0; padding: .25em 0;}
+
+nav {text-align: left; height: 2em;}
+nav .button {float: left;}
+nav .button img {padding: .25em; float: left; height: 1.5em;}
+nav a, nav a:visited {text-decoration: none; color: purple; line-height: 2em;}
