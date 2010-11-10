@@ -23,7 +23,7 @@
         <footer>
             <p>&copy; {% now "Y" %} - Two Madisons</p>
             {% if user.is_authenticated %}
-            <p>Logged in as [{{ user }}]&nbsp; | &nbsp; <a href="{% url logout %}?next=/">logout</a></p>
+            <p class="logout">Logged in as [{{ user }}]&nbsp; | &nbsp; <a href="{% url logout %}?next=/">logout</a></p>
             {% endif %}
         </footer>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>

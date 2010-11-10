@@ -16,6 +16,7 @@ body {
     width: 100%;
 }
 
+fieldset {border: none;}
 a, a:visited {text-decoration: none; color: purple; line-height: 2em;}
 input {line-height: 2em;}
 
@@ -27,4 +28,25 @@ nav .button img {padding: .25em; float: left; height: 1.5em;}
 
 .content {text-align: left;}
 .content li.list_name {padding-right: 10px; background: url({{ MEDIA_URL }}images/iPhoneArrow.png) right center no-repeat;}
+.list_name a {display: block;}
 .content li {border-bottom: 1px solid #333; line-height: 2.5em; padding: 0 .5em;}
+
+
+form {font-size: 1.2em;}
+form label {margin-right: .5em;}
+form fieldset ul {list-style-type: none; }
+form fieldset li {padding: 0; border: none;}
+form [type=submit] {padding: .25em .5em; border-radius: 5px; background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.29, rgb(82,138,45)),
+    color-stop(0.89, rgb(156,75,147))
+); font-weight: bold; color: #fff;}
+.content form fieldset li {border: none;}
+
+footer p {margin: .5em 0;}
+footer p.logout {float: right; margin: 0 1em 0 0;}
+
+.completed {text-decoration: line-through;}
+.center {text-align: center;}
