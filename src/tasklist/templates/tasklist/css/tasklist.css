@@ -50,3 +50,4 @@ footer p.logout {float: right; margin: 0 1em 0 0;}
 
 .completed {text-decoration: line-through;}
 .center {text-align: center;}
+.hidden {display: none;}
