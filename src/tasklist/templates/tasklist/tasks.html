@@ -3,9 +3,22 @@
 {% block title %}Tasks{% endblock %}
 {% block page_title %}{{ tasklist }}{% endblock %}
 
+{% block nav %}
+    <div class="button add_task">
+        <span style="line-height: 2em;"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</span>
+    </div>
+{% endblock %}
+
 {% block content %}
-    <ul>
-        <li><a href="{{ tasklist.get_add_task_url }}"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</a></li>
+<ul>
+    <li class="task_form hidden">
+        <form action="{{ tasklist.get_add_task_url }}" method="post">{% csrf_token %}
+            <fieldset>
+                <input type="text" name="description" />
+                <input type="submit" value="add" />
+            </fieldset>
+        </form>
+    </li>
     {% for task in tasks %}
         <li id="{{ task.id }}" class="task_item{% if task.status == 1 %} completed{% endif %}">{{ task }}</li>
     {% empty %}
@@ -15,7 +28,5 @@
 {% endblock %}
 
 {% block scripts %}
-    {% comment %}
-    {% include "tasklist/change_status_ajax.js" %}
-    {% endcomment %}
+    {% include "tasklist/js/tasklist.js" %}
 {% endblock %}

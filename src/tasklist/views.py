@@ -27,18 +27,13 @@ def add_list(request):
         'form': form,
     })
 
+@login_required
 def add_task(request, tasklist_id):
-    return http.HttpResponse("hello world")
-#    form = forms.AddTaskForm(request.POST or None)
-#    if form.is_valid():
-#        list = models.List.get_by_id(int(list_id))
-#        form.save(list)
-#        return http.HttpResponseRedirect(reverse('listapp:tasks', args=[list.key().id()]))
-#    return template.render(request, "add_task.html", {
-#        'form': form,
-#    })
-#
-
+    tasklist = shortcuts.get_object_or_404(models.TaskList, pk=tasklist_id)
+    if request.method == "POST":
+        models.Task.objects.create(tasklist=tasklist, description=request.POST.get("description", ""))
+        return http.HttpResponseRedirect(tasklist.get_absolute_url())
+    raise http.Http404
 
 @login_required
 def tasks(request, tasklist_id=None):
@@ -47,7 +42,7 @@ def tasks(request, tasklist_id=None):
         'tasklist': tasklist,
         'tasks': models.Task.get_tasks(tasklist),
     })
-#
+
 #def change_status(request):
 #    logging.warn("we're at the ajax test")
 #    logging.warn("Task id: " + request.POST.get('task'))

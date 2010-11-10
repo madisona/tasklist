@@ -94,6 +94,11 @@ class AuthenticationTests(test.TestCase):
         response = client.get(reverse("tasklist:tasks", args=(1,)))
         self.assertRedirects(response, reverse("login") + "?next=/tasks/1/", 302)
 
+    def should_require_logged_in_user_for_add_task_page(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:add_task", args=(1,)))
+        self.assertRedirects(response, reverse("login") + "?next=/add-task/1/", 302)
+
     def should_send_non_logged_in_user_to_login_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:index"), follow=True)
@@ -162,3 +167,20 @@ class TasksPage(ListAppAuthenticatedTestCase):
         self.assertEqual(tasks_mock.call_args, [(tasklist_mock.return_value,), {}])
         self.assertEqual(response.context['tasklist'], tasklist_mock.return_value)
         self.assertEqual(response.context['tasks'], tasks_mock.return_value)
+
+class AddTaskPage(ListAppAuthenticatedTestCase):
+
+    @patch("django.shortcuts.get_object_or_404", Mock(return_value=None))
+    def should_return_404_if_not_post(self):
+        response = self.client.get(reverse("tasklist:add_task", args=(1,)))
+        self.assertEqual(response.status_code, 404)
+
+    def should_add_task_to_db(self):
+        tasklist = models.TaskList.objects.create(name="Aaron's Tasks", owner=self.user)
+        response = self.client.post(reverse("tasklist:add_task", args=(tasklist.pk,)), {'description': "something"})
+
+        task = models.Task.objects.get(pk=1)
+        self.assertEqual(task.description, "something")
+        self.assertRedirects(response, reverse("tasklist:tasks", args=(tasklist.pk,)), status_code=302)
+
+
