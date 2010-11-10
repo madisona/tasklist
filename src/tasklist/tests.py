@@ -77,6 +77,16 @@ class TaskModelTests(test.TestCase):
         }])
         self.assertEqual(tasks, query_mock.return_value)
 
+    def should_set_status_to_one_if_zero(self):
+        task = models.Task(status=0)
+        task.toggle_status()
+        self.assertEqual(task.status, 1)
+
+    def should_set_status_to_zero_if_one(self):
+        task = models.Task(status=1)
+        task.toggle_status()
+        self.assertEqual(task.status, 0)
+
 class AuthenticationTests(test.TestCase):
 
     def should_require_logged_in_user_for_index_page(self):
@@ -87,7 +97,7 @@ class AuthenticationTests(test.TestCase):
     def should_require_logged_in_user_for_add_list_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:add_list"))
-        self.assertRedirects(response, reverse("login") + "?next=/add-list", 302)
+        self.assertRedirects(response, reverse("login") + "?next=/add-list/", 302)
 
     def should_require_logged_in_user_for_tasks_page(self):
         client = test.Client()
@@ -98,6 +108,11 @@ class AuthenticationTests(test.TestCase):
         client = test.Client()
         response = client.get(reverse("tasklist:add_task", args=(1,)))
         self.assertRedirects(response, reverse("login") + "?next=/add-task/1/", 302)
+
+    def should_require_logged_in_user_for_toggle_status_page(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:toggle_status"))
+        self.assertRedirects(response, reverse("login") + "?next=/toggle-status/", 302)
 
     def should_send_non_logged_in_user_to_login_page(self):
         client = test.Client()
@@ -182,5 +197,23 @@ class AddTaskPage(ListAppAuthenticatedTestCase):
         task = models.Task.objects.get(pk=1)
         self.assertEqual(task.description, "something")
         self.assertRedirects(response, reverse("tasklist:tasks", args=(tasklist.pk,)), status_code=302)
+
+class ToggleStatusPage(ListAppAuthenticatedTestCase):
+
+    def should_return_404_if_task_not_found(self):
+        response = self.client.post(reverse("tasklist:toggle_status"), {'task': "1"})
+        self.assertEqual(response.status_code, 404)
+
+    @patch("django.shortcuts.get_object_or_404")
+    def should_toggle_status_and_save(self, get_mock):
+        response = self.client.post(reverse("tasklist:toggle_status"), {'task': "1"})
+        self.assertTrue(get_mock.return_value.toggle_status.called)
+        self.assertTrue(get_mock.return_value.save.called)
+
+
+#    task = shortcuts.get_object_or_404(models.Task, pk=request.POST.get("task"))
+#    task.toggle_status()
+#    task.save()
+
 
 

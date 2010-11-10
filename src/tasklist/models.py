@@ -48,3 +48,7 @@ class Task(models.Model):
     @staticmethod
     def get_tasks(tasklist):
         return Task.objects.filter(tasklist=tasklist, status__in=(0, 1))
+
+    def toggle_status(self):
+        self.status = 1 if self.status == 0 else 0
+
