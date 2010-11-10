@@ -1,8 +1,8 @@
 {% extends "tasklist/list-base.html" %}
 
 {% block title %}Add List{% endblock %}
-{% block content %}
 
+{% block content %}
 <form action="" method="post">{% csrf_token %}
     <div class="center">
         <p>{{ form }}</p>
