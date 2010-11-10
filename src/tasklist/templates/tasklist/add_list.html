@@ -1,6 +1,11 @@
 {% extends "tasklist/list-base.html" %}
 
 {% block title %}Add List{% endblock %}
+{% block nav %}
+    <div class="button">
+        &nbsp;&nbsp;<a href="/">Back</a>
+    </div>
+{% endblock %}
 
 {% block content %}
 <form action="" method="post">{% csrf_token %}
