@@ -48,6 +48,9 @@ form [type=submit] {padding: .25em .5em; border-radius: 5px; background: -webkit
 footer p {margin: .5em 0;}
 footer p.logout {float: right; margin: 0 1em 0 0;}
 
-.completed {text-decoration: line-through;}
+.task_item {background: url({{ MEDIA_URL }}images/box.png) 5px center no-repeat;}
+.completed {text-decoration: line-through; background-image: url({{ MEDIA_URL }}images/checked.png);}
+li.task_item {padding-left: 1.5em;}
+
 .center {text-align: center;}
 .hidden {display: none;}
