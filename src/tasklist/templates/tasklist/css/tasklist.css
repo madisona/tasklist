@@ -18,7 +18,6 @@ body {
 
 fieldset {border: none;}
 a, a:visited {text-decoration: none; color: purple; line-height: 2em;}
-input {line-height: 2em;}
 
 header h1 {background-color: purple; border-bottom: 1px solid #333; color: #fff; font-size: 1.6em; margin: 0; padding: .25em 0;}
 
@@ -31,8 +30,7 @@ nav .button img {padding: .25em; float: left; height: 1.5em;}
 .list_name a {display: block;}
 .content li {border-bottom: 1px solid #333; line-height: 2.5em; padding: 0 .5em;}
 
-
-form {font-size: 1.2em;}
+input {font-size: 1.2em;}
 form label {margin-right: .5em;}
 form fieldset ul {list-style-type: none; }
 form fieldset li {padding: 0; border: none;}
