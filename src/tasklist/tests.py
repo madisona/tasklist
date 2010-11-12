@@ -98,38 +98,38 @@ class AuthenticationTests(test.TestCase):
     def should_require_logged_in_user_for_index_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:index"))
-        self.assertRedirects(response, reverse("login") + "?next=/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/", 302)
 
     def should_require_logged_in_user_for_add_list_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:add_list"))
-        self.assertRedirects(response, reverse("login") + "?next=/add-list/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/add-list/", 302)
 
     def should_require_logged_in_user_for_tasks_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:tasks", args=(1,)))
-        self.assertRedirects(response, reverse("login") + "?next=/tasks/1/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/tasks/1/", 302)
 
     def should_require_logged_in_user_for_add_task_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:add_task", args=(1,)))
-        self.assertRedirects(response, reverse("login") + "?next=/add-task/1/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/add-task/1/", 302)
 
     def should_require_logged_in_user_for_toggle_status_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:toggle_status"))
-        self.assertRedirects(response, reverse("login") + "?next=/toggle-status/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/toggle-status/", 302)
 
     def should_require_logged_in_user_for_clear_completed_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:clear_completed"))
-        self.assertRedirects(response, reverse("login") + "?next=/clear-completed/", 302)
+        self.assertRedirects(response, reverse("auth_login") + "?next=/clear-completed/", 302)
 
     def should_send_non_logged_in_user_to_login_page(self):
         client = test.Client()
         response = client.get(reverse("tasklist:index"), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "tasklist/login.html")
+        self.assertTemplateUsed(response, "registration/login.html")
 
 class IndexPageTests(ListAppAuthenticatedTestCase):
 

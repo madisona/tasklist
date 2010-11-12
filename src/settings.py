@@ -83,6 +83,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'src.urls'
 
 TEMPLATE_DIRS = (
+    PROJECT_DIR + "/templates",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -99,12 +100,16 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-
+    'registration',
     'debug_toolbar',
     'tasklist',
 
 )
 
+# registration app uses this to tell how many days user has to register
+ACCOUNT_ACTIVATION_DAYS = 30
+
+# Misc settings for debug toolbar
 INTERNAL_IPS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
