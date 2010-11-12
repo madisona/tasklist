@@ -7,6 +7,9 @@
     <div class="button add_task">
         <span style="line-height: 2em;"><img src="{{ MEDIA_URL }}images/add.png" alt="add task"> Add Task</span>
     </div>
+    <div class="button" style="float: right;">
+        <a href="{% url tasklist:index %}"><img src="{{ MEDIA_URL }}images/house.png" alt="home"></a>
+    </div>
 {% endblock %}
 
 {% block content %}

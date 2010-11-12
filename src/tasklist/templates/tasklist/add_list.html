@@ -2,8 +2,8 @@
 
 {% block title %}Add List{% endblock %}
 {% block nav %}
-    <div class="button">
-        &nbsp;&nbsp;<a href="/">Back</a>
+    <div class="button" style="float: right;">
+        <a href="{% url tasklist:index %}"><img src="{{ MEDIA_URL }}images/house.png" alt="home"></a>
     </div>
 {% endblock %}
 
