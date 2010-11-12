@@ -1,0 +1,17 @@
+{% extends "tasklist/list-base.html" %}
+
+{% block content %}
+<div class="center">
+    <form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+        <fieldset>
+            <ul>
+                {{ form.as_ul }}
+            </ul>
+            <p>
+                <input type="submit" value="login" />
+                <input type="hidden" name="next" value="{{ next }}" />
+            </p>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
