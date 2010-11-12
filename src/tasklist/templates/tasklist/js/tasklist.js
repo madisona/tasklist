@@ -3,6 +3,10 @@ $(document).ready(function() {
         $(".task_form").slideDown("fast");
     });
 
+    $(".add_list").click(function() {
+        $(".add_list_form").slideDown("fast");
+    });
+
     $(".task_item").click(function(){
         var el = $(this);
         $.ajax({

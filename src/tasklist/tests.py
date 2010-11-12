@@ -146,29 +146,17 @@ class IndexPageTests(ListAppAuthenticatedTestCase):
 
 class AddListPageTests(ListAppAuthenticatedTestCase):
 
-    def should_allow_logged_in_user_to_access_page(self):
+    def should_return_404_if_not_post(self):
         response = self.client.get(reverse("tasklist:add_list"))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "tasklist/add_list.html")
+        self.assertEqual(response.status_code, 404)
 
-    @patch('tasklist.forms.TaskListForm')
-    def should_send_form_to_template(self, form_mock):
-        form_mock.return_value.is_valid.return_value = False
-        response = self.client.get(reverse("tasklist:add_list"))
-        self.assertEqual(response.context['form'], form_mock.return_value)
+    def should_add_list_to_db(self):
+        response = self.client.post(reverse("tasklist:add_list"), {'name': "New list"})
+        tasklist = models.TaskList.objects.get(pk=1)
+        self.assertEqual(tasklist.name, "New list")
 
-    @patch('tasklist.forms.TaskListForm')
-    def should_save_form_if_valid(self, form_mock):
-        form_mock.return_value.is_valid.return_value = True
-
-        response = self.client.get(reverse("tasklist:add_list"))
-        self.assertTrue(form_mock.return_value.save.called, "Didn't call save on a valid form")
-
-    @patch('tasklist.forms.TaskListForm')
-    def should_redirect_to_index_page_if_valid_form(self, form_mock):
-        form_mock.return_value.is_valid.return_value = True
-
-        response = self.client.get(reverse("tasklist:add_list"))
+    def should_redirect_to_index_page_if_valid_form(self):
+        response = self.client.post(reverse("tasklist:add_list"), {'name': "New_list"})
         self.assertRedirects(response, reverse("tasklist:index"), status_code=302)
 
 class TasksPage(ListAppAuthenticatedTestCase):

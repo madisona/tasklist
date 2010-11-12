@@ -15,12 +15,7 @@
 {% block content %}
 <ul>
     <li class="task_form hidden">
-        <form action="{{ tasklist.get_add_task_url }}" method="post">{% csrf_token %}
-            <fieldset>
-                <input type="text" name="description" />
-                <input type="submit" value="add" />
-            </fieldset>
-        </form>
+        {% include "tasklist/forms/add_task_form.html" %}
     </li>
     {% for task in tasks %}
         <li id="{{ task.id }}" class="task_item{% if task.status == 1 %} completed{% endif %}">{{ task }}</li>
@@ -28,16 +23,7 @@
         <li>No Tasks Yet...</li>
     {% endfor %}
 </ul>
-<form action="{% url tasklist:clear_completed %}" method="post">{% csrf_token %}
-    <p class="center">
-        <input type="hidden" name="tasklist_id" value="{{ tasklist.id }}" />
-        <input type="submit" value="clear completed" />
-    </p>
-</form>
+{% include "tasklist/forms/clear_completed_form.html" %}
 
 
-{% endblock %}
-
-{% block scripts %}
-    {% include "tasklist/js/tasklist.js" %}
 {% endblock %}

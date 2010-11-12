@@ -17,15 +17,10 @@ def index(request):
 
 @login_required
 def add_list(request):
-    tasklist = models.TaskList(owner=request.user)
-    form = forms.TaskListForm(request.POST or None, instance=tasklist)
-    if form.is_valid():
-        form.save()
+    if request.method == "POST":
+        models.TaskList.objects.create(owner=request.user, name=request.POST.get("name", ""))
         return http.HttpResponseRedirect(reverse("tasklist:index"))
-        
-    return template.render(request, "tasklist/add_list.html", {
-        'form': form,
-    })
+    raise http.Http404
 
 @login_required
 def add_task(request, tasklist_id):

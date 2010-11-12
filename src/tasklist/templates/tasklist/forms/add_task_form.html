@@ -1,0 +1,6 @@
+<form action="{{ tasklist.get_add_task_url }}" method="post">{% csrf_token %}
+    <fieldset>
+        <input type="text" name="description" />
+        <input type="submit" value="add" />
+    </fieldset>
+</form>

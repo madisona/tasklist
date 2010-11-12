@@ -5,13 +5,14 @@
 
 {% block nav %}
 <span class="button">
-    <a href="{% url tasklist:add_list %}"><img src="{{ MEDIA_URL }}images/add.png" alt="add item">New List</a>
+    <span class="add_list" style="line-height: 2em;"><img src="{{ MEDIA_URL }}images/add.png" alt="add item">New List</span>
 </span>
 
 {% endblock %}
 
 {% block content %}
 <ul>
+    <li class="add_list_form hidden">{% include "tasklist/forms/add_list_form.html" %}</li>
     {% for tasklist in tasklists %}
         <li class="list_name">
             <a href="{{ tasklist.get_absolute_url }}">{{ tasklist }}</a>

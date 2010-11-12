@@ -1,0 +1,6 @@
+<form action="{% url tasklist:add_list %}" method="post">{% csrf_token %}
+    <fieldset>
+        <input type="text" name="name" />
+        <input type="submit" value="Add List" />
+    </fieldset>
+</form>
