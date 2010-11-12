@@ -49,3 +49,11 @@ def toggle_status(request):
     task.toggle_status()
     task.save()
     return http.HttpResponse("success")
+
+@login_required
+def clear_completed(request):
+    if request.method == "POST":
+        tasklist = shortcuts.get_object_or_404(models.TaskList, pk=request.POST.get("tasklist_id"))
+        tasklist.clear_completed()
+        return http.HttpResponseRedirect(tasklist.get_absolute_url())
+    raise http.Http404

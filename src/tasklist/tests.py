@@ -31,10 +31,10 @@ class TaskListModelTests(test.TestCase):
         tasklist = models.TaskList(name="Aaron's Tasks")
         self.assertEqual(str(tasklist), tasklist.name)
 
-    def should_default_status_to_zero(self):
+    def should_default_status_to_active(self):
         user = User.objects.create(username="aaron", password="pswd", email="a@b.com")
         tasklist = models.TaskList.objects.create(name="Aaron's Tasks", owner=user)
-        self.assertEqual(tasklist.status, 0)
+        self.assertEqual(tasklist.status, models.TaskList.ACTIVE)
 
     @patch("tasklist.models.TaskList.objects")
     def should_get_all_lists(self, query_mock):
@@ -42,9 +42,16 @@ class TaskListModelTests(test.TestCase):
         tasklists = models.TaskList.get_tasklists(user)
         self.assertEqual(query_mock.method_calls, [("filter", (), {
             'owner': user,
-            'status': 0,
+            'status': models.TaskList.ACTIVE,
         })])
         self.assertEqual(tasklists, query_mock.filter.return_value)
+
+    @patch("tasklist.models.Task.objects")
+    def should_delete_completed_tasks(self, query_mock):
+        tasklist = models.TaskList()
+        tasklist.clear_completed()
+        self.assertEqual(query_mock.filter.call_args, [(), {'tasklist': tasklist, 'status': models.Task.COMPLETED}])
+        self.assertTrue(query_mock.filter.return_value.delete.called)
 
     def should_get_absolute_url_to_task_list(self):
         tasklist = models.TaskList(pk=1)
@@ -65,15 +72,14 @@ class TaskModelTests(test.TestCase):
         user = User.objects.create(username="aaron", password="pswd", email="a@b.com")
         tasklist = models.TaskList.objects.create(name="Aaron's Tasks", owner=user)
         task = models.Task.objects.create(tasklist=tasklist, description="New Task")
-        self.assertEqual(task.status, 0)
+        self.assertEqual(task.status, models.Task.ACTIVE)
 
     @patch("tasklist.models.Task.objects.filter")
-    def should_get_non_deleted_tasks(self, query_mock):
+    def should_get_tasks(self, query_mock):
         tasklist = Mock()
         tasks = models.Task.get_tasks(tasklist)
         self.assertEqual(query_mock.call_args, [(), {
             'tasklist': tasklist,
-            'status__in': (0, 1),
         }])
         self.assertEqual(tasks, query_mock.return_value)
 
@@ -113,6 +119,11 @@ class AuthenticationTests(test.TestCase):
         client = test.Client()
         response = client.get(reverse("tasklist:toggle_status"))
         self.assertRedirects(response, reverse("login") + "?next=/toggle-status/", 302)
+
+    def should_require_logged_in_user_for_clear_completed_page(self):
+        client = test.Client()
+        response = client.get(reverse("tasklist:clear_completed"))
+        self.assertRedirects(response, reverse("login") + "?next=/clear-completed/", 302)
 
     def should_send_non_logged_in_user_to_login_page(self):
         client = test.Client()
@@ -210,10 +221,22 @@ class ToggleStatusPage(ListAppAuthenticatedTestCase):
         self.assertTrue(get_mock.return_value.toggle_status.called)
         self.assertTrue(get_mock.return_value.save.called)
 
+class ClearCompletedTasksPage(ListAppAuthenticatedTestCase):
 
-#    task = shortcuts.get_object_or_404(models.Task, pk=request.POST.get("task"))
-#    task.toggle_status()
-#    task.save()
+    def should_return_404_if_not_post(self):
+        response = self.client.get(reverse("tasklist:clear_completed"))
+        self.assertEqual(response.status_code, 404)
 
+    def should_return_404_if_tasklist_not_found(self):
+        response = self.client.post(reverse("tasklist:clear_completed"))
+        self.assertEqual(response.status_code, 404)
 
+    @patch("django.shortcuts.get_object_or_404")
+    def should_delete_completed_tasks(self, get_mock):
+        response = self.client.post(reverse("tasklist:clear_completed"), {"tasklist_id": 1})
+        self.assertTrue(get_mock.return_value.clear_completed.called)
 
+    def should_redirect_to_tasks_page_on_success(self):
+        tasklist = models.TaskList.objects.create(name="Aaron's Tasks", owner=self.user)
+        response = self.client.post(reverse("tasklist:clear_completed"), {'tasklist_id': tasklist.id})
+        self.assertRedirects(response, reverse("tasklist:tasks", args=(tasklist.pk,)), status_code=302)

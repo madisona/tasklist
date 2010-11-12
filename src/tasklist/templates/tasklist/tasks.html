@@ -25,6 +25,14 @@
         <li>No Tasks Yet...</li>
     {% endfor %}
 </ul>
+<form action="{% url tasklist:clear_completed %}" method="post">{% csrf_token %}
+    <p class="center">
+        <input type="hidden" name="tasklist_id" value="{{ tasklist.id }}" />
+        <input type="submit" value="clear completed" />
+    </p>
+</form>
+
+
 {% endblock %}
 
 {% block scripts %}
