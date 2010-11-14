@@ -1,1 +1,25 @@
-<h1>Registration Form</h1>
+{% extends "tasklist/list-base.html" %}
+
+{% block css %}
+    .content {text-align: center;}
+    .wrapper {margin: auto;}
+    .registration_form {}
+    .registration_form ul {list-style: none; width: 26em; margin: auto;}
+    .registration_form li {border: none;}
+    .registration_form form label {width: 7em; float: left; text-align: right;}
+
+{% endblock %}
+
+{% block content %}
+<div class="registration_form">
+    <h1>Registration Form</h1>
+    <form action="" method="post">{% csrf_token %}
+        <ul>
+            {{ form.as_ul }}
+            <p class="center">
+                <input type="submit" value="Register" />
+            </p>
+        </ul>
+    </form>
+</div>
+{% endblock %}

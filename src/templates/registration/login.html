@@ -13,5 +13,10 @@
             </p>
         </fieldset>
     </form>
+
+    <div class="register">
+        <p>Don't have an account? <a href="{% url registration_register %}">register here</a>.</p>
+    </div>
+    <p><a href={% url auth_password_reset %}>Forgot your password?</a></p>
 </div>
 {% endblock %}

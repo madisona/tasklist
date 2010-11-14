@@ -1,1 +1,13 @@
-<h1>Registration Complete</h1>
+{% extends "tasklist/list-base.html" %}
+
+{% block css %}
+    .text_section {padding: .5em;}
+{% endblock %}
+
+{% block content %}
+<div class="text_section">
+    <h1>Thanks for registering!</h1>
+    <p>Soon you will be receiving an email with instruction on how to complete your user activation.</p>
+</div>
+
+{% endblock %}

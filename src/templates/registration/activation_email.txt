@@ -1,0 +1,7 @@
+Hi there!
+
+Thanks for registering for the list app. Please click this link http://{{ site }}{% url registration_activate activation_key %} to complete your registration.
+
+ Have a great day,
+
+ ~ aaron
