@@ -9,7 +9,7 @@ setup(
 
     package_dir={'': 'src'},
     install_requires = (
-        'django==1.2.3',
+        'django',
         'mock',          # used for testing purposes
         'pyyaml',        # useful for fixtures and testing
         'django-debug-toolbar',
