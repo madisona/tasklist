@@ -66,6 +66,8 @@ sys.path[0:0] = [
     %(path)s,
 ]
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
 from django.core.handlers import wsgi
 application = wsgi.WSGIHandler()
 
