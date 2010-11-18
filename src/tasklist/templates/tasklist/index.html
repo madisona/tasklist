@@ -4,14 +4,16 @@
 {% block page_title %}{{ user.first_name }}'s Lists{% endblock %}
 
 {% block nav %}
-<span class="button">
-    <span class="add_list" style="line-height: 2em;"><img src="{{ MEDIA_URL }}images/add.png" alt="add item">New List</span>
-</span>
+<nav>
+    <span class="button">
+        <span class="add_list" style="line-height: 2em;"><img src="{{ MEDIA_URL }}images/add.png" alt="add item">New List</span>
+    </span>
+</nav>
 
 {% endblock %}
 
 {% block content %}
-<ul>
+<ul class="content">
     <li class="add_list_form hidden">{% include "tasklist/forms/add_list_form.html" %}</li>
     {% for tasklist in tasklists %}
         <li class="list_name">
