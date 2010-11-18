@@ -1,0 +1,13 @@
+{% extends "tasklist/list-base.html" %}
+
+{% block title %}Oops, page not found{% endblock %}
+{% block css %}
+.text_section {padding: .5em;}
+{% endblock %}
+
+{% block content %}
+<div class="text_section">
+    <h1>Oops, page not found.</h1>
+    <p>The page you requested, <strong>{{ request_path }}</strong> is not found. Please double check the url you were trying to visit to make sure it is valid.</p>
+</div>
+{% endblock %}
