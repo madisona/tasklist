@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 
 from ext import template
 from tasklist import models
-from tasklist import forms
 
 @login_required
 def index(request):
