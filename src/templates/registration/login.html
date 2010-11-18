@@ -1,5 +1,6 @@
 {% extends "tasklist/list-base.html" %}
 
+{% block title %}Task List Login{% endblock %}
 {% block content %}
 <div class="center">
     <form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
